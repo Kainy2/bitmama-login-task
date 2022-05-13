@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/layout'
 import Login from '../components/Login';
 import { useStoreContext } from '../utils/Store';
@@ -10,28 +10,12 @@ import { useStoreContext } from '../utils/Store';
 const Home = () => {
   const { store, setStoreContext }: any = useStoreContext()
   const { user, presence, isNewUser }: any = store
-
+  const [ visibility, setVisibility ] = useState( 'visible' )
 
   // Handle page visibility change events
   function visibilityListener() {
-    let timer = null
-    switch ( document.visibilityState ) {
-      case "hidden":
-        timer = setTimeout( () => {
-          setStoreContext( {
-            ...store, presence: 'idle'
-          } )
-        }, 60000 );
-        break;
-      case "visible":
-        setStoreContext( {
-          ...store, presence: 'active'
-        } )
-        if ( timer ) {
-          clearTimeout( timer )
-        }
-        break;
-    }
+    setVisibility( document.visibilityState
+    )
   }
 
   useEffect( () => {
@@ -41,15 +25,28 @@ const Home = () => {
 
   useEffect( () => {
     const users = localStorage.getItem( '' )
-  }, [ presence ] )
-
-
+    let timer = null
+    if ( visibility !== 'visible' ) {
+      timer = setTimeout( () => {
+        setStoreContext( {
+          presence: 'idle'
+        } )
+      }, 60000 );
+    } else {
+      setStoreContext( {
+        presence: 'active'
+      } )
+      if ( timer ) {
+        clearTimeout( timer )
+      }
+    }
+  }, [ visibility ] )
 
 
   const setUser = () => {
     localStorage.setItem( 'user', '' )
     setStoreContext( {
-      user: localStorage.getItem( 'user' ) ?? ''
+      user: localStorage.getItem( 'user' ) || ''
     } )
   }
 
@@ -62,6 +59,7 @@ const Home = () => {
 
 
   console.log( localStorage );
+  console.log( sessionStorage );
 
   return (
     <Layout >
@@ -83,7 +81,7 @@ const Home = () => {
           >Log Out
           </button>
           <button
-            className='block bg-indigo-700 mt-5 text-white rounded-md py-2 min-w-[100px]'
+            className='block bg-indigo-700 mt-5 px-5 text-white rounded-md py-2 min-w-[100px]'
             onClick={ newUsersignIn }
           >Sign in with another
           </button>

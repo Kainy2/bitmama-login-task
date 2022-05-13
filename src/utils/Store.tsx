@@ -30,12 +30,14 @@ const ContextProvider: FC<Props> = ( { children } ) => {
 
   useEffect( () => {
     const storageData: any = localStorage.getItem( 'users' )
-    const users: [] = JSON.parse( storageData ) || []
-    setStore( {
-      ...store, user: users[ users.length - 1 ] || ''
+    const users: any[] = JSON.parse( storageData ) || []
+    const sessionUser = sessionStorage.getItem( 'user' )
+    setStoreContext( {
+      user: sessionUser || users[ users?.length - 1 ]?.user || ''
     } )
 
-  }, [ store.user ] )
+    // eslint-disable-next-line
+  }, [] )
 
 
 
