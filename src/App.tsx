@@ -1,16 +1,16 @@
 import React from 'react';
-import Layout from './components/layout'
-import ContextProvider from './utils/Store';
+import Home from './pages/Home';
+import ContextProvider, { useStoreContext } from './utils/Store';
 
 
 function App() {
-  return (
-    <ContextProvider>
 
-      <Layout >
-        test
-      </ Layout>
-    </ContextProvider>
+  return (
+    <>
+      <ContextProvider>
+        <Home />
+      </ContextProvider>
+    </>
   );
 }
 
