@@ -30,15 +30,18 @@ const Login: React.FC<Props> = ( { children } ) => {
     //   ...store, loggedUser: localStorage.getItem( 'loggedUser' ) ?? ''
     // } )
 
-
     const storageData: any = localStorage.getItem( 'users' )
-    const users: [] = JSON.parse( storageData ) || []
+    const users: object[] = JSON.parse( storageData ) || []
     setStoreContext( {
-      ...store, user: inputChange.toLowerCase()
+      user: inputChange.toLowerCase(), isNewUser: false
     } )
-
-
-    localStorage.setItem( 'users', inputChange.toLowerCase() )
+    sessionStorage.setItem( 'user', inputChange.toLowerCase() )
+    const user = {
+      user: inputChange.toLowerCase(),
+      presence: 'active'
+    }
+    users.push( user )
+    localStorage.setItem( 'users', JSON.stringify( users ) )
   }
 
   return (
