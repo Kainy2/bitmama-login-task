@@ -8,7 +8,6 @@ interface Props {
 const Index: React.FC<Props> = ( { children } ) => {
   return (
     <div>
-      <Login />
       { children }
     </div>
   )
