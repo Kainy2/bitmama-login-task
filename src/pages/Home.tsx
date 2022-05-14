@@ -43,11 +43,24 @@ const Home = () => {
   }, [ visibility ] )
 
 
-  const setUser = () => {
-    localStorage.setItem( 'user', '' )
+  const logOut = () => {
+    sessionStorage.clear()
+
     setStoreContext( {
-      user: localStorage.getItem( 'user' ) || ''
+      user: ''
     } )
+    const storageData: any = localStorage.getItem( 'users' )
+    const users: object[] = JSON.parse( storageData ) || []
+
+    let index = -1
+    users.forEach( ( value: any, elementIndex ) => {
+      if ( value.user === user ) {
+        index = elementIndex
+      }
+    } )
+    users.splice( index, 1 )
+    localStorage.setItem( 'users', JSON.stringify( users ) )
+
   }
 
   const newUsersignIn = () => {
@@ -77,7 +90,7 @@ const Home = () => {
         <div className="flex space-x-5">
           <button
             className='block bg-indigo-700 mt-5 text-white rounded-md py-2 min-w-[100px]'
-            onClick={ setUser }
+            onClick={ logOut }
           >Log Out
           </button>
           <button
