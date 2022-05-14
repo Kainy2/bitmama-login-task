@@ -11,6 +11,7 @@ const Home = () => {
   const { store, setStoreContext }: any = useStoreContext()
   const { user, presence, isNewUser }: any = store
   const [ visibility, setVisibility ] = useState( 'visible' )
+  const [ usersL, setUsersL ]: any = useState( [] )
 
   // Handle page visibility change events
   function visibilityListener() {
@@ -20,11 +21,24 @@ const Home = () => {
 
   useEffect( () => {
     document.addEventListener( "visibilitychange", visibilityListener );
+
+    window.addEventListener( 'storage', () => {
+      const storageData: any = localStorage.getItem( 'users' )
+      const users: object[] = JSON.parse( storageData ) || []
+      setUsersL( users )
+
+    } )
+    const storageData: any = localStorage.getItem( 'users' )
+    const users: object[] = JSON.parse( storageData ) || []
+    setUsersL( users )
     // eslint-disable-next-line
   }, [] )
 
+
+
+
   useEffect( () => {
-    const users = localStorage.getItem( '' )
+
     let timer = null
     if ( visibility !== 'visible' ) {
       timer = setTimeout( () => {
@@ -86,6 +100,37 @@ const Home = () => {
         <div className='flex  space-x-7'>
           <p>Presence: </p>
           <p className='font-semibold capitalize'> { presence } </p>
+        </div>
+
+        <div className='my-20'>
+          <h1 className='font-semibold text-capitalise my-5 text-center'>Other Users On the Platform</h1>
+          { usersL.map( ( userIn: any, index: number ) => {
+            return (
+              <div className='flex' key={ userIn.user }>
+                { userIn.user !== user &&
+                  <div className='flex space-x-10 items-center '  >
+                    <div>
+                      <p>
+                        Username: { userIn.user }
+                      </p>
+                      <p>
+                        Presence: { userIn.presence }
+                      </p>
+                    </div>
+                    <button
+                      className='blck bg-indigo-700 text-white rounded-md py-1 min-w-[100px]'
+                      onClick={ () => {
+                        const temp = [ ...usersL ]
+                        temp.splice( index, 1 )
+                        localStorage.setItem( 'users', JSON.stringify( temp ) )
+                      } }
+                    >Log Out
+                    </button>
+                  </div>
+                }
+              </div>
+            )
+          } ) }
         </div>
         <div className="flex space-x-5">
           <button
