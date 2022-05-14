@@ -15,17 +15,17 @@ const Home = () => {
 
   // Handle page visibility change events
   function visibilityListener() {
-    setVisibility( document.visibilityState
-    )
+    setVisibility( document.visibilityState )
   }
 
   useEffect( () => {
     document.addEventListener( "visibilitychange", visibilityListener );
 
-    window.addEventListener( 'storage', () => {
+    document.addEventListener( 'storage', () => {
       const storageData: any = localStorage.getItem( 'users' )
       const users: object[] = JSON.parse( storageData ) || []
       setUsersL( users )
+      console.log( 'running' )
 
     } )
     const storageData: any = localStorage.getItem( 'users' )
@@ -108,7 +108,7 @@ const Home = () => {
             return (
               <div className='flex' key={ userIn.user }>
                 { userIn.user !== user &&
-                  <div className='flex space-x-10 items-center '  >
+                  <div className='flex space-x-10 items-center my-3 '  >
                     <div>
                       <p>
                         Username: { userIn.user }
@@ -123,6 +123,7 @@ const Home = () => {
                         const temp = [ ...usersL ]
                         temp.splice( index, 1 )
                         localStorage.setItem( 'users', JSON.stringify( temp ) )
+                        setUsersL( temp )
                       } }
                     >Log Out
                     </button>
