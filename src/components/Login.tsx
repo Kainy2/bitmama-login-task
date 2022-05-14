@@ -26,12 +26,14 @@ const Login: React.FC<Props> = ( { children } ) => {
   const handleSubmit = ( e: any ) => {
     e.preventDefault();
     setInputChange( '' )
-    // setStoreContext( {
-    //   ...store, loggedUser: localStorage.getItem( 'loggedUser' ) ?? ''
-    // } )
 
     const storageData: any = localStorage.getItem( 'users' )
     const users: object[] = JSON.parse( storageData ) || []
+
+    if ( users.find( ( user: any ) => user.user === inputChange.toLowerCase() ) ) {
+      return alert( 'User Already Logged in' )
+    }
+
     setStoreContext( {
       user: inputChange.toLowerCase(), isNewUser: false
     } )
