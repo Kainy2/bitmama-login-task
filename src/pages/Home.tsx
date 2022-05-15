@@ -71,6 +71,7 @@ const Home = () => {
         clearTimeout( timer )
       }
     }
+    // eslint-disable-next-line
   }, [ visibility ] )
 
 

@@ -8,7 +8,7 @@ interface Props {
 
 
 const Login: React.FC<Props> = ( { children } ) => {
-  const { store, setStoreContext }: any = useStoreContext()
+  const { setStoreContext }: any = useStoreContext()
   // const { user }: any = store
 
   const [ inputChange, setInputChange ] = useState( '' )
