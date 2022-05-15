@@ -1,18 +1,15 @@
-import React, { useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { useStoreContext } from '../utils/Store'
 
 //imported interfaces  
-import { Store } from '../utils/Store.js'
-
 interface Props {
   children?: any
 }
 
 
-
 const Login: React.FC<Props> = ( { children } ) => {
-  const { store, setStoreContext }: any = useStoreContext()
-  const { user }: any = store
+  const { setStoreContext }: any = useStoreContext()
+  // const { user }: any = store
 
   const [ inputChange, setInputChange ] = useState( '' )
 
@@ -31,6 +28,7 @@ const Login: React.FC<Props> = ( { children } ) => {
     const users: object[] = JSON.parse( storageData ) || []
 
     if ( users.find( ( user: any ) => user.user === inputChange.toLowerCase() ) ) {
+      localStorage.setItem( 'focus', inputChange.toLowerCase() )
       return alert( 'User Already Logged in' )
     }
 
