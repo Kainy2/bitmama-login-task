@@ -32,6 +32,9 @@ const ContextProvider: FC<Props> = ( { children } ) => {
     const storageData: any = localStorage.getItem( 'users' )
     const users: any[] = JSON.parse( storageData ) || []
     const sessionUser = sessionStorage.getItem( 'user' )
+    if ( sessionUser && !users.find( ( value: any ) => value.user === sessionUser ) ) {
+      sessionStorage.clear()
+    }
     setStoreContext( {
       user: sessionUser || users[ users?.length - 1 ]?.user || ''
     } )

@@ -14,23 +14,40 @@ const Home = () => {
   const [ usersL, setUsersL ]: any = useState( [] )
 
   // Handle page visibility change events
-  function visibilityListener() {
+  const visibilityListener = () => {
     setVisibility( document.visibilityState )
+  }
+
+  const monitorStorage = () => {
+    const storageData: any = localStorage.getItem( 'users' )
+    const users: object[] = JSON.parse( storageData ) || []
+    setUsersL( users )
+    const sessionUser = sessionStorage.getItem( 'user' )
+    const focus = localStorage.getItem( 'focus' )
+    if ( sessionUser && !users.find( ( value: any ) => value.user === sessionUser ) ) {
+      window.location.reload()
+    }
+
+    if ( focus && user === focus ) {
+      window.open()
+      alert( 'some one just tried to sign in with your user name' )
+      localStorage.removeItem( 'focus' )
+    }
   }
 
   useEffect( () => {
     document.addEventListener( "visibilitychange", visibilityListener );
+    window.addEventListener( 'storage', monitorStorage )
 
-    document.addEventListener( 'storage', () => {
-      const storageData: any = localStorage.getItem( 'users' )
-      const users: object[] = JSON.parse( storageData ) || []
-      setUsersL( users )
-      console.log( 'running' )
-
-    } )
     const storageData: any = localStorage.getItem( 'users' )
     const users: object[] = JSON.parse( storageData ) || []
     setUsersL( users )
+
+    //cleanup
+    return () => {
+      document.removeEventListener( 'visibilitychange', visibilityListener )
+      window.removeEventListener( 'storage', monitorStorage )
+    }
     // eslint-disable-next-line
   }, [] )
 
