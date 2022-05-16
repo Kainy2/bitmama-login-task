@@ -45,12 +45,25 @@ const Home = () => {
 
     //cleanup
     return () => {
-      document.removeEventListener( 'visibilitychange', visibilityListener )
-      window.removeEventListener( 'storage', monitorStorage )
+      // document.removeEventListener( 'visibilitychange', visibilityListener )
+      // window.removeEventListener( 'storage', monitorStorage )
     }
     // eslint-disable-next-line
   }, [] )
 
+  useEffect( () => {
+    const storageData: any = localStorage.getItem( 'users' )
+    const users: object[] = JSON.parse( storageData ) || []
+
+    users.map( ( value: any, elementIndex ) => {
+      if ( value.user === user ) {
+        return value.presence = presence
+      } else return value
+    } )
+    localStorage.setItem( 'users', JSON.stringify( users ) )
+
+    // eslint-disable-next-line
+  }, [ presence ] )
 
 
 
@@ -113,7 +126,7 @@ const Home = () => {
 
         <div className='flex  space-x-7'>
           <p>Signed User: </p>
-          <p className='font-semibold capitalize'> { user } </p>
+          <p className='font-semibold'> { user } </p>
         </div>
         <div className='flex  space-x-7'>
           <p>Presence: </p>

@@ -20,7 +20,7 @@ const ContextProvider: FC<Props> = ( { children } ) => {
   const [ store, setStore ] = useState( {
     isNewUser: false,
     user: '',
-    presence: 'active'
+    presence: 'active',
   } )
 
   // console.log( store );
